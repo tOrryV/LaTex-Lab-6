@@ -13,7 +13,7 @@
 \begin{center}
 \vspace*{\fill}
 
-\Clock{20}{15}  
+\Clock{6}{30}  
 
 \begin{tikzpicture}
     % Background gradient
@@ -67,8 +67,9 @@
     }
 
     % Clock hands
-    \pgfmathsetmacro{\hourAngle}{90 - (360/12)*(\hour + \minute/60)}
-    \pgfmathsetmacro{\minuteAngle}{90 - (360/60)*\minute}
+     \pgfmathsetmacro{\hourAngle}{ 180 - (360/12)*(\hour + \minute/60)}
+    \pgfmathsetmacro{\minuteAngle}{180 -(360/60)*\minute}
+
 
     % Годинна стрілка (товста, з витягнутим ромбом)
     \begin{scope}[rotate=\hourAngle]
