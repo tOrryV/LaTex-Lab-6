@@ -1,0 +1,91 @@
+\documentclass[landscape,a2paper,extrafontsizes,12pt]{memoir}
+\usepackage[a3paper,margin=0.2cm]{geometry}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{shapes.geometric, positioning, decorations.pathreplacing, shadows.blur}
+
+\newcommand{\Clock}[2]{
+  \def\hour{#1}  
+  \def\minute{#2} 
+}
+
+\begin{document}
+\begin{center}
+\vspace*{\fill}
+
+\Clock{20}{15}  
+
+\begin{tikzpicture}
+    % Background gradient
+    \shade[inner color=blue!10, outer color=blue!40] (0,0) circle (10.7cm);
+    
+    % Outer glowing ring
+    \draw[line width=1cm, color=cyan!50!white, opacity=0.3, blur shadow={shadow xshift=0pt, shadow yshift=0pt, shadow blur steps=10}] (0,0) circle (10.7cm);
+
+    % Major hour markers
+    \foreach \x in {0,30,...,360} {
+        \draw [line width = 0.2cm, color=blue] (\x:9cm) -- (\x:10.5cm);
+    }
+    % Minor minute markers
+    \foreach \x in {0,6,...,360} {
+        \draw [line width = 0.05cm, color=gray] (\x:10cm) -- (\x:10.5cm);
+    }
+    
+    % Number markers as glowing dots
+    \foreach \x in {0,30,...,330} {
+        \fill[cyan, blur shadow={shadow blur steps=5}] (\x:9cm) circle (0.3cm);
+    }
+    
+    % Center point with glow
+    \draw[fill=black, blur shadow={shadow blur steps=10}] (0,0) circle (0.5cm);
+    
+    % Labels OUTSIDE the clock in circular nodes - closer to the edge, fun colors
+    \foreach \x/\text in {
+        60/$\boldsymbol{9^{9-9}}$,
+        30/$\boldsymbol{\dfrac{9+9}{9}}$,
+        0/$\boldsymbol{\sqrt{\log_{9}{9^9}}}$,
+        -30/$\boldsymbol{\sqrt{9}+\log_{9}9}$,
+        -60/$\boldsymbol{\sqrt{9}!-\log_{9}9}$,
+        -90/$\boldsymbol{9 - \dfrac{9}{\sqrt{9}}}$,
+        -120/$\boldsymbol{\sqrt{9}!+\dfrac{9}{9}}$,
+        -150/$\boldsymbol{9 - \dfrac{9}{9}}$,
+        -180/$\boldsymbol{\sqrt[9]{9^9}}$,
+        -210/$\boldsymbol{9 + \log_{9}{9}}$,
+        -240/$\boldsymbol{\dfrac{99}{9}}$,
+        90/$\boldsymbol{9 + \dfrac{9}{\sqrt{9}}}$}
+    {
+        \node[
+            draw=pink!80!yellow,             % Яскрава обводка
+            fill=magenta!50!cyan!30,         % Веселий фон
+            text=black,         % Текст контрастний
+            circle,                          
+            minimum size=3.5cm,              
+            align=center,                    
+            font=\Large\bfseries,            % Жирний для більшої виразності
+            blur shadow={shadow blur steps=5}
+        ] at (\x:11.2cm) {\text}; % Перенесли ближче до краю годинника
+    }
+
+    % Clock hands
+    \pgfmathsetmacro{\hourAngle}{90 - (360/12)*(\hour + \minute/60)}
+    \pgfmathsetmacro{\minuteAngle}{90 - (360/60)*\minute}
+
+    % Годинна стрілка (товста, з витягнутим ромбом)
+    \begin{scope}[rotate=\hourAngle]
+        \draw[line width=1mm] (0,0) -- (0,-5.5cm);
+        \filldraw[fill=red, draw=black, line width=0.5mm]
+            (0,-5.5cm) -- (-0.3cm,-4.7cm) -- (0,-3.9cm) -- (0.3cm,-4.7cm) -- cycle;
+    \end{scope}
+    
+    % Хвилинна стрілка (тонка, довга, з витягнутим ромбом)
+    \begin{scope}[rotate=\minuteAngle]
+        \draw[line width=1mm] (0,0) -- (0,-7.5cm);
+        \draw[draw=black, line width=0.5mm, fill=blue!10]
+            (0,-7.5cm) -- (-0.3cm,-6.9cm) -- (0,-6.1cm) -- (0.3cm,-6.9cm) -- cycle;
+    \end{scope}
+
+\end{tikzpicture}
+
+\vspace*{\fill}
+\end{center}
+\end{document}
